@@ -1,0 +1,1 @@
+API definition for the Globex Mobile Gateway
