@@ -1,0 +1,572 @@
+openapi: 3.0.2
+info:
+    title: Mobile Gateway
+    version: 1.0.0
+    license:
+        name: MIT License
+        url: 'https://opensource.org/licenses/MIT'
+paths:
+    /activity:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        examples:
+                            activity-tracking-example:
+                                value:
+                                    idSite: globex-retail
+                                    activity:
+                                        userId: 7672a49e-9afc-498f-91bc-98f881179f2c
+                                        url: 'https://globex-retail.com/product/12345/details'
+                                        rand: ba6eb330-4f7f-11eb-a2fb-67c34e9ac07c
+                                        type: like
+                                    userInfo:
+                                        visitsCount: 1
+                                        prevVisitTs: 1647249258
+                                        firstVisitTs: 1647249258
+                                        campaign: abc123
+                                        localTime: '2022-03-14T09:26:04+00:00'
+                                        newVisit: 1
+                                    actionInfo:
+                                        productId: a12345
+                required: true
+            responses:
+                '200':
+                    description: Ok
+                '400':
+                    description: Bad request. Payload refused
+            security:
+                -
+                    mobile-gateway-api: []
+            summary: Post activity event
+    /recommendation/product:
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            examples:
+                                product-score:
+                                    value:
+                                        -
+                                            productId: '329299'
+                                            score: 148
+                                        -
+                                            productId: '329199'
+                                            score: 145
+                                        -
+                                            productId: '165613'
+                                            score: 141
+                                        -
+                                            productId: '165614'
+                                            score: 138
+                                        -
+                                            productId: '165954'
+                                            score: 132
+                    description: Successful response. Returns an aggregated product score.
+            summary: Get an aggregated product score
+    '/catalog/product/{id}':
+        get:
+            parameters:
+                -
+                    examples:
+                        product-with-inventory-1:
+                            value: 'true'
+                        product-without-inventory:
+                            value: 'false'
+                    name: inventory
+                    description: Whether to include inventory information in the response
+                    schema:
+                        type: boolean
+                    in: query
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            examples:
+                                product-with-inventory-1:
+                                    value:
+                                        itemId: '329299'
+                                        name: Quarkus T-shirt
+                                        desc: >-
+                                            Our T-Shirt is an everyday essential! This short-sleeve
+                                            heavyweight T-shirt is comfortable, economical and made to last.
+                                            Designed with a traditional fit that runs true to size, he’ll show
+                                            off his personality, humor and interests with an easy, relaxed
+                                            style.
+                                        price: 10
+                                        quantity: 736
+                                product-with-inventory-2:
+                                    value:
+                                        itemId: '329299'
+                                        name: Quarkus T-shirt
+                                        desc: >-
+                                            Our T-Shirt is an everyday essential! This short-sleeve
+                                            heavyweight T-shirt is comfortable, economical and made to last.
+                                            Designed with a traditional fit that runs true to size, he’ll show
+                                            off his personality, humor and interests with an easy, relaxed
+                                            style.
+                                        price: 10
+                                        quantity: 736
+                                product-without-inventory:
+                                    value:
+                                        itemId: '329299'
+                                        name: Quarkus T-shirt
+                                        desc: >-
+                                            Our T-Shirt is an everyday essential! This short-sleeve
+                                            heavyweight T-shirt is comfortable, economical and made to last.
+                                            Designed with a traditional fit that runs true to size, he’ll show
+                                            off his personality, humor and interests with an easy, relaxed
+                                            style.
+                                        price: 10
+                    description: Product found
+                '404':
+                    description: Product not found
+            security:
+                -
+                    mobile-gateway-api: []
+            summary: Get a product by ID
+        parameters:
+            -
+                examples:
+                    product-with-inventory-1:
+                        value: '329299'
+                    product-with-inventory-2:
+                        value: '329299'
+                    product-without-inventory:
+                        value: '329299'
+                    product-not-found:
+                        value: '999999'
+                name: id
+                schema:
+                    type: string
+                in: path
+                required: true
+    '/catalog/product/list/{ids}':
+        get:
+            parameters:
+                -
+                    examples:
+                        product-list-with-inventory-2:
+                            value: 'true'
+                        product-list-without-inventory:
+                            value: 'false'
+                    name: inventory
+                    description: Whether to include inventory information in the response
+                    schema:
+                        type: boolean
+                    in: query
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            examples:
+                                product-list-with-inventory-1:
+                                    value:
+                                        -
+                                            itemId: '329299'
+                                            name: Quarkus T-shirt
+                                            desc: >-
+                                                Our T-Shirt is an everyday essential! This short-sleeve
+                                                heavyweight T-shirt is comfortable, economical and made to
+                                                last. Designed with a traditional fit that runs true to size,
+                                                he’ll show off his personality, humor and interests with an
+                                                easy, relaxed style.
+                                            price: 10
+                                            quantity: 736
+                                        -
+                                            itemId: '329199'
+                                            name: Pronounced Kubernetes
+                                            desc: >-
+                                                Our Men's Value T-Shirt is an everyday essential! This
+                                                short-sleeve heavyweight T-shirt is comfortable, economical
+                                                and made to last. Designed with a traditional fit that runs
+                                                true to size, he’ll show off his personality, humor and
+                                                interests with an easy, relaxed style.
+                                            price: 9
+                                            quantity: 512
+                                product-list-with-inventory-2:
+                                    value:
+                                        -
+                                            itemId: '329299'
+                                            name: Quarkus T-shirt
+                                            desc: >-
+                                                Our T-Shirt is an everyday essential! This short-sleeve
+                                                heavyweight T-shirt is comfortable, economical and made to
+                                                last. Designed with a traditional fit that runs true to size,
+                                                he’ll show off his personality, humor and interests with an
+                                                easy, relaxed style.
+                                            price: 10
+                                            quantity: 736
+                                        -
+                                            itemId: '329199'
+                                            name: Pronounced Kubernetes
+                                            desc: >-
+                                                Our Men's Value T-Shirt is an everyday essential! This
+                                                short-sleeve heavyweight T-shirt is comfortable, economical
+                                                and made to last. Designed with a traditional fit that runs
+                                                true to size, he’ll show off his personality, humor and
+                                                interests with an easy, relaxed style.
+                                            price: 9
+                                            quantity: 512
+                                product-list-without-inventory:
+                                    value:
+                                        -
+                                            itemId: '329299'
+                                            name: Quarkus T-shirt
+                                            desc: >-
+                                                Our T-Shirt is an everyday essential! This short-sleeve
+                                                heavyweight T-shirt is comfortable, economical and made to
+                                                last. Designed with a traditional fit that runs true to size,
+                                                he’ll show off his personality, humor and interests with an
+                                                easy, relaxed style.
+                                            price: 10
+                                        -
+                                            itemId: '329199'
+                                            name: Pronounced Kubernetes
+                                            desc: >-
+                                                Our Men's Value T-Shirt is an everyday essential! This
+                                                short-sleeve heavyweight T-shirt is comfortable, economical
+                                                and made to last. Designed with a traditional fit that runs
+                                                true to size, he’ll show off his personality, humor and
+                                                interests with an easy, relaxed style.
+                                            price: 9
+                    description: Product list returned
+            security:
+                -
+                    mobile-gateway-api: []
+            summary: Get a list of products by id
+        parameters:
+            -
+                examples:
+                    product-list-with-inventory-1:
+                        value: '329199,329299'
+                    product-list-with-inventory-2:
+                        value: '329199,329299'
+                    product-list-without-inventory:
+                        value: '329199,329299'
+                name: ids
+                schema:
+                    type: string
+                in: path
+                required: true
+    /catalog/products:
+        get:
+            parameters:
+                -
+                    examples:
+                        product-list-with-inventory-1:
+                            value: '1'
+                        product-list-with-inventory-2:
+                            value: '1'
+                        product-list-without-inventory:
+                            value: '1'
+                    name: page
+                    description: Page number. First page = 1.
+                    schema:
+                        type: integer
+                    in: query
+                    required: true
+                -
+                    examples:
+                        product-list-with-inventory-1:
+                            value: '5'
+                        product-list-with-inventory-2:
+                            value: '5'
+                        product-list-without-inventory:
+                            value: '5'
+                    name: limit
+                    description: Max number of records returned
+                    schema:
+                        type: integer
+                    in: query
+                    required: true
+                -
+                    examples:
+                        product-list-with-inventory-2:
+                            value: 'true'
+                        product-list-without-inventory:
+                            value: 'false'
+                    name: inventory
+                    description: Whether to include inventory information in the response.
+                    schema:
+                        type: boolean
+                    in: query
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            examples:
+                                product-list-with-inventory-1:
+                                    value:
+                                        content:
+                                            -
+                                                itemId: '329299'
+                                                name: Quarkus T-shirt
+                                                desc: >-
+                                                    Our T-Shirt is an everyday essential! This short-sleeve
+                                                    heavyweight T-shirt is comfortable, economical and made to
+                                                    last. Designed with a traditional fit that runs true to
+                                                    size, he’ll show off his personality, humor and interests
+                                                    with an easy, relaxed style.
+                                                price: 10
+                                                quantity: 736
+                                            -
+                                                itemId: '329199'
+                                                name: Pronounced Kubernetes
+                                                desc: >-
+                                                    Our Men's Value T-Shirt is an everyday essential! This
+                                                    short-sleeve heavyweight T-shirt is comfortable,
+                                                    economical and made to last. Designed with a traditional
+                                                    fit that runs true to size, he’ll show off his
+                                                    personality, humor and interests with an easy, relaxed
+                                                    style.
+                                                price: 9
+                                                quantity: 512
+                                            -
+                                                itemId: '165613'
+                                                name: Knit socks
+                                                desc: >-
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Ut urna leo, cursus a fringilla et, aliquam at tellus.
+                                                    Praesent est nulla, mattis in auctor vitae, commodo sed
+                                                    eros. Etiam volutpat a felis vel elementum. Duis ut
+                                                    vestibulum orci, ut hendrerit felis. Nulla nunc lectus,
+                                                    luctus ut tortor a, sollicitudin gravida dolor. Integer
+                                                    euismod, velit non tempor mattis, odio neque ornare neque,
+                                                    nec sollicitudin elit massa nec ante.
+                                                price: 4.15
+                                                quantity: 256
+                                            -
+                                                itemId: '165614'
+                                                name: Quarkus H2Go water bottle
+                                                desc: >-
+                                                    Copper vacuum insulated sport bottle with 650 ml capacity.
+                                                    Durable, double wall stainless steel vacuum construction
+                                                    with copper insulation, which allows your beverage to stay
+                                                    cold for 48 hours and at least 12 hours for hot beverages.
+                                                    The construction also prevents condensation on the outside
+                                                    of the bottle. Material: Stainless Steel. Colour: Black
+                                                    Height:27,20 cm Diameter:7,20 cm Weight:380 gram
+                                                price: 14.45
+                                                quantity: 54
+                                            -
+                                                itemId: '165954'
+                                                name: Patagonia Refugio pack 28L
+                                                desc: >-
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Ut urna leo, cursus a fringilla et, aliquam at tellus.
+                                                    Praesent est nulla, mattis in auctor vitae, commodo sed
+                                                    eros. Etiam volutpat a felis vel elementum. Duis ut
+                                                    vestibulum orci, ut hendrerit felis. Nulla nunc lectus,
+                                                    luctus ut tortor a, sollicitudin gravida dolor. Integer
+                                                    euismod, velit non tempor mattis, odio neque ornare neque,
+                                                    nec sollicitudin elit massa nec ante.
+                                                price: 6
+                                                quantity: 87
+                                        pageable:
+                                            sort:
+                                                sorted: false
+                                                unsorted: true
+                                                empty: true
+                                            offset: 0
+                                            pageNumber: 0
+                                            pageSize: 5
+                                            paged: true
+                                            unpaged: false
+                                        totalPages: 9
+                                        totalElements: 41
+                                        last: false
+                                        size: 5
+                                        number: 0
+                                        sort:
+                                            sorted: false
+                                            unsorted: true
+                                            empty: true
+                                        numberOfElements: 5
+                                        first: true
+                                        empty: false
+                                product-list-with-inventory-2:
+                                    value:
+                                        content:
+                                            -
+                                                itemId: '329299'
+                                                name: Quarkus T-shirt
+                                                desc: >-
+                                                    Our T-Shirt is an everyday essential! This short-sleeve
+                                                    heavyweight T-shirt is comfortable, economical and made to
+                                                    last. Designed with a traditional fit that runs true to
+                                                    size, he’ll show off his personality, humor and interests
+                                                    with an easy, relaxed style.
+                                                price: 10
+                                                quantity: 736
+                                            -
+                                                itemId: '329199'
+                                                name: Pronounced Kubernetes
+                                                desc: >-
+                                                    Our Men's Value T-Shirt is an everyday essential! This
+                                                    short-sleeve heavyweight T-shirt is comfortable,
+                                                    economical and made to last. Designed with a traditional
+                                                    fit that runs true to size, he’ll show off his
+                                                    personality, humor and interests with an easy, relaxed
+                                                    style.
+                                                price: 9
+                                                quantity: 512
+                                            -
+                                                itemId: '165613'
+                                                name: Knit socks
+                                                desc: >-
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Ut urna leo, cursus a fringilla et, aliquam at tellus.
+                                                    Praesent est nulla, mattis in auctor vitae, commodo sed
+                                                    eros. Etiam volutpat a felis vel elementum. Duis ut
+                                                    vestibulum orci, ut hendrerit felis. Nulla nunc lectus,
+                                                    luctus ut tortor a, sollicitudin gravida dolor. Integer
+                                                    euismod, velit non tempor mattis, odio neque ornare neque,
+                                                    nec sollicitudin elit massa nec ante.
+                                                price: 4.15
+                                                quantity: 256
+                                            -
+                                                itemId: '165614'
+                                                name: Quarkus H2Go water bottle
+                                                desc: >-
+                                                    Copper vacuum insulated sport bottle with 650 ml capacity.
+                                                    Durable, double wall stainless steel vacuum construction
+                                                    with copper insulation, which allows your beverage to stay
+                                                    cold for 48 hours and at least 12 hours for hot beverages.
+                                                    The construction also prevents condensation on the outside
+                                                    of the bottle. Material: Stainless Steel. Colour: Black
+                                                    Height:27,20 cm Diameter:7,20 cm Weight:380 gram
+                                                price: 14.45
+                                                quantity: 54
+                                            -
+                                                itemId: '165954'
+                                                name: Patagonia Refugio pack 28L
+                                                desc: >-
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Ut urna leo, cursus a fringilla et, aliquam at tellus.
+                                                    Praesent est nulla, mattis in auctor vitae, commodo sed
+                                                    eros. Etiam volutpat a felis vel elementum. Duis ut
+                                                    vestibulum orci, ut hendrerit felis. Nulla nunc lectus,
+                                                    luctus ut tortor a, sollicitudin gravida dolor. Integer
+                                                    euismod, velit non tempor mattis, odio neque ornare neque,
+                                                    nec sollicitudin elit massa nec ante.
+                                                price: 6
+                                                quantity: 87
+                                        pageable:
+                                            sort:
+                                                sorted: false
+                                                unsorted: true
+                                                empty: true
+                                            offset: 0
+                                            pageNumber: 0
+                                            pageSize: 5
+                                            paged: true
+                                            unpaged: false
+                                        totalPages: 9
+                                        totalElements: 41
+                                        last: false
+                                        size: 5
+                                        number: 0
+                                        sort:
+                                            sorted: false
+                                            unsorted: true
+                                            empty: true
+                                        numberOfElements: 5
+                                        first: true
+                                        empty: false
+                                product-list-without-inventory:
+                                    value:
+                                        content:
+                                            -
+                                                itemId: '329299'
+                                                name: Quarkus T-shirt
+                                                desc: >-
+                                                    Our T-Shirt is an everyday essential! This short-sleeve
+                                                    heavyweight T-shirt is comfortable, economical and made to
+                                                    last. Designed with a traditional fit that runs true to
+                                                    size, he’ll show off his personality, humor and interests
+                                                    with an easy, relaxed style.
+                                                price: 10
+                                            -
+                                                itemId: '329199'
+                                                name: Pronounced Kubernetes
+                                                desc: >-
+                                                    Our Men's Value T-Shirt is an everyday essential! This
+                                                    short-sleeve heavyweight T-shirt is comfortable,
+                                                    economical and made to last. Designed with a traditional
+                                                    fit that runs true to size, he’ll show off his
+                                                    personality, humor and interests with an easy, relaxed
+                                                    style.
+                                                price: 9
+                                            -
+                                                itemId: '165613'
+                                                name: Knit socks
+                                                desc: >-
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Ut urna leo, cursus a fringilla et, aliquam at tellus.
+                                                    Praesent est nulla, mattis in auctor vitae, commodo sed
+                                                    eros. Etiam volutpat a felis vel elementum. Duis ut
+                                                    vestibulum orci, ut hendrerit felis. Nulla nunc lectus,
+                                                    luctus ut tortor a, sollicitudin gravida dolor. Integer
+                                                    euismod, velit non tempor mattis, odio neque ornare neque,
+                                                    nec sollicitudin elit massa nec ante.
+                                                price: 4.15
+                                            -
+                                                itemId: '165614'
+                                                name: Quarkus H2Go water bottle
+                                                desc: >-
+                                                    Copper vacuum insulated sport bottle with 650 ml capacity.
+                                                    Durable, double wall stainless steel vacuum construction
+                                                    with copper insulation, which allows your beverage to stay
+                                                    cold for 48 hours and at least 12 hours for hot beverages.
+                                                    The construction also prevents condensation on the outside
+                                                    of the bottle. Material: Stainless Steel. Colour: Black
+                                                    Height:27,20 cm Diameter:7,20 cm Weight:380 gram
+                                                price: 14.45
+                                            -
+                                                itemId: '165954'
+                                                name: Patagonia Refugio pack 28L
+                                                desc: >-
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    Ut urna leo, cursus a fringilla et, aliquam at tellus.
+                                                    Praesent est nulla, mattis in auctor vitae, commodo sed
+                                                    eros. Etiam volutpat a felis vel elementum. Duis ut
+                                                    vestibulum orci, ut hendrerit felis. Nulla nunc lectus,
+                                                    luctus ut tortor a, sollicitudin gravida dolor. Integer
+                                                    euismod, velit non tempor mattis, odio neque ornare neque,
+                                                    nec sollicitudin elit massa nec ante.
+                                                price: 6
+                                        pageable:
+                                            sort:
+                                                sorted: false
+                                                unsorted: true
+                                                empty: true
+                                            offset: 0
+                                            pageNumber: 0
+                                            pageSize: 5
+                                            paged: true
+                                            unpaged: false
+                                        totalPages: 9
+                                        totalElements: 41
+                                        last: false
+                                        size: 5
+                                        number: 0
+                                        sort:
+                                            sorted: false
+                                            unsorted: true
+                                            empty: true
+                                        numberOfElements: 5
+                                        first: true
+                                        empty: false
+                    description: Paginated product list returned.
+            security:
+                -
+                    mobile-gateway-api: []
+            summary: Get a paginated list of products
+components:
+    securitySchemes:
+        mobile-gateway-api:
+            type: apiKey
+            name: api_key
+            in: header
