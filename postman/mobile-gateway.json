@@ -1,0 +1,1327 @@
+{
+	"info": {
+		"_postman_id": "e25b84d2-b3d9-4267-aa52-a30b6e5b9dca",
+		"name": "Mobile Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get product by ID",
+			"item": [
+				{
+					"name": "Get product with inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"itemId\": {\"type\": \"string\"},",
+									"\t\t\"name\": {\"type\": \"string\"},",
+									"\t\t\"desc\": {\"type\": \"string\"},",
+									"        \"price\": {\"type\": \"number\"},",
+									"        \"quantity\": {\"type\": \"integer\"}",
+									"    },",
+									"    \"required\": [\"itemId\", \"name\", \"desc\", \"price\", \"quantity\"],",
+									"    \"additionalProperties\": false",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"The id of the product matches\", function () {",
+									"    pm.expect(jsonData.itemId).to.eql(pm.collectionVariables.get(\"itemId\"));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/:id?inventory=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								":id"
+							],
+							"query": [
+								{
+									"key": "inventory",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{itemId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product with inventory w/o query param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"itemId\": {\"type\": \"string\"},",
+									"\t\t\"name\": {\"type\": \"string\"},",
+									"\t\t\"desc\": {\"type\": \"string\"},",
+									"        \"price\": {\"type\": \"number\"},",
+									"        \"quantity\": {\"type\": \"integer\"}",
+									"    },",
+									"    \"required\": [\"itemId\", \"name\", \"desc\", \"price\", \"quantity\"],",
+									"    \"additionalProperties\": false",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"The id of the product matches\", function () {",
+									"    pm.expect(jsonData.itemId).to.eql(pm.collectionVariables.get(\"itemId\"));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{itemId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product without inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"object\",",
+									"    \"properties\": {",
+									"        \"itemId\": {\"type\": \"string\"},",
+									"\t\t\"name\": {\"type\": \"string\"},",
+									"\t\t\"desc\": {\"type\": \"string\"},",
+									"        \"price\": {\"type\": \"number\"}",
+									"    },",
+									"    \"required\": [\"itemId\", \"name\", \"desc\", \"price\"],",
+									"    \"additionalProperties\": false",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"The id of the product matches\", function () {",
+									"    pm.expect(jsonData.itemId).to.eql(pm.collectionVariables.get(\"itemId\"));",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/:id?inventory=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								":id"
+							],
+							"query": [
+								{
+									"key": "inventory",
+									"value": "false"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{itemId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product does not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{itemId2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get paginated product list",
+			"item": [
+				{
+					"name": "Get product list with inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [",
+									"        \"content\",",
+									"        \"pageable\",",
+									"        \"totalPages\",",
+									"        \"totalElements\",",
+									"        \"last\",",
+									"        \"size\",",
+									"        \"number\",",
+									"        \"sort\",",
+									"        \"numberOfElements\",",
+									"        \"first\",",
+									"        \"empty\"",
+									"    ],",
+									"    \"properties\": {",
+									"        \"content\": {",
+									"            \"type\": \"array\",",
+									"            \"additionalItems\": false,",
+									"            \"items\": {",
+									"                \"anyOf\": [",
+									"                    {",
+									"                        \"type\": \"object\",",
+									"                        \"required\": [",
+									"                            \"itemId\",",
+									"                            \"name\",",
+									"                            \"desc\",",
+									"                            \"price\",",
+									"                            \"quantity\"",
+									"                        ],",
+									"                        \"properties\": {",
+									"                            \"itemId\": {\"type\": \"string\"},",
+									"                            \"name\": {\"type\": \"string\"},",
+									"                            \"desc\": {\"type\": \"string\"},",
+									"                            \"price\": {\"type\": \"number\"},",
+									"                            \"quantity\": {\"type\": \"integer\"}",
+									"                        },",
+									"                        \"additionalProperties\": false",
+									"                    }",
+									"                ]",
+									"            }",
+									"        },",
+									"        \"pageable\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [",
+									"                \"sort\",",
+									"                \"offset\",",
+									"                \"pageNumber\",",
+									"                \"pageSize\",",
+									"                \"paged\",",
+									"                \"unpaged\"",
+									"            ],",
+									"            \"properties\": {",
+									"                \"sort\": {",
+									"                    \"type\": \"object\",",
+									"                    \"required\": [",
+									"                        \"sorted\",",
+									"                        \"unsorted\",",
+									"                        \"empty\"",
+									"                    ],",
+									"                    \"properties\": {",
+									"                        \"sorted\": {\"type\": \"boolean\"},",
+									"                        \"unsorted\": {\"type\": \"boolean\"},",
+									"                        \"empty\": {\"type\": \"boolean\"}",
+									"                    },",
+									"                    \"additionalProperties\": false",
+									"                },",
+									"                \"offset\": {\"type\": \"integer\"},",
+									"                \"pageNumber\": {\"type\": \"integer\"},",
+									"                \"pageSize\": {\"type\": \"integer\"},",
+									"                \"paged\": {\"type\": \"boolean\"},",
+									"                \"unpaged\": {\"type\": \"boolean\"}",
+									"            },",
+									"            \"additionalProperties\": false",
+									"        },",
+									"        \"totalPages\": {\"type\": \"integer\"},",
+									"        \"totalElements\": {\"type\": \"integer\"},",
+									"        \"last\": {\"type\": \"boolean\"},",
+									"        \"size\": {\"type\": \"integer\"},",
+									"        \"number\": {\"type\": \"integer\"},",
+									"        \"sort\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [",
+									"                \"sorted\",",
+									"                \"unsorted\",",
+									"                \"empty\"",
+									"            ],",
+									"            \"properties\": {",
+									"                \"sorted\": {\"type\": \"boolean\"},",
+									"                \"unsorted\": {\"type\": \"boolean\"},",
+									"                \"empty\": {\"type\": \"boolean\"}",
+									"            },",
+									"            \"additionalProperties\": false",
+									"        },",
+									"        \"numberOfElements\": {\"type\": \"integer\"},",
+									"        \"first\": {\"type\": \"boolean\"},",
+									"        \"empty\": {\"type\": \"boolean\"}",
+									"    },",
+									"    \"additionalProperties\": false",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData.content).length;",
+									"\tpm.expect(num).to.eql(parseInt(pm.collectionVariables.get(\"limit\")));",
+									"});",
+									"",
+									"pm.test(\"Page returned\", function() {",
+									"\tpage = pm.collectionVariables.get(\"page\") - 1;",
+									"\tpm.expect(jsonData.number).to.eql(page);",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/products?inventory=true&limit={{limit}}&page={{page}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"products"
+							],
+							"query": [
+								{
+									"key": "inventory",
+									"value": "true"
+								},
+								{
+									"key": "limit",
+									"value": "{{limit}}"
+								},
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product list with inventory w/o query param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [",
+									"        \"content\",",
+									"        \"pageable\",",
+									"        \"totalPages\",",
+									"        \"totalElements\",",
+									"        \"last\",",
+									"        \"size\",",
+									"        \"number\",",
+									"        \"sort\",",
+									"        \"numberOfElements\",",
+									"        \"first\",",
+									"        \"empty\"",
+									"    ],",
+									"    \"properties\": {",
+									"        \"content\": {",
+									"            \"type\": \"array\",",
+									"            \"additionalItems\": false,",
+									"            \"items\": {",
+									"                \"anyOf\": [",
+									"                    {",
+									"                        \"type\": \"object\",",
+									"                        \"required\": [",
+									"                            \"itemId\",",
+									"                            \"name\",",
+									"                            \"desc\",",
+									"                            \"price\",",
+									"                            \"quantity\"",
+									"                        ],",
+									"                        \"properties\": {",
+									"                            \"itemId\": {\"type\": \"string\"},",
+									"                            \"name\": {\"type\": \"string\"},",
+									"                            \"desc\": {\"type\": \"string\"},",
+									"                            \"price\": {\"type\": \"number\"},",
+									"                            \"quantity\": {\"type\": \"integer\"}",
+									"                        },",
+									"                        \"additionalProperties\": false",
+									"                    }",
+									"                ]",
+									"            }",
+									"        },",
+									"        \"pageable\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [",
+									"                \"sort\",",
+									"                \"offset\",",
+									"                \"pageNumber\",",
+									"                \"pageSize\",",
+									"                \"paged\",",
+									"                \"unpaged\"",
+									"            ],",
+									"            \"properties\": {",
+									"                \"sort\": {",
+									"                    \"type\": \"object\",",
+									"                    \"required\": [",
+									"                        \"sorted\",",
+									"                        \"unsorted\",",
+									"                        \"empty\"",
+									"                    ],",
+									"                    \"properties\": {",
+									"                        \"sorted\": {\"type\": \"boolean\"},",
+									"                        \"unsorted\": {\"type\": \"boolean\"},",
+									"                        \"empty\": {\"type\": \"boolean\"}",
+									"                    },",
+									"                    \"additionalProperties\": false",
+									"                },",
+									"                \"offset\": {\"type\": \"integer\"},",
+									"                \"pageNumber\": {\"type\": \"integer\"},",
+									"                \"pageSize\": {\"type\": \"integer\"},",
+									"                \"paged\": {\"type\": \"boolean\"},",
+									"                \"unpaged\": {\"type\": \"boolean\"}",
+									"            },",
+									"            \"additionalProperties\": false",
+									"        },",
+									"        \"totalPages\": {\"type\": \"integer\"},",
+									"        \"totalElements\": {\"type\": \"integer\"},",
+									"        \"last\": {\"type\": \"boolean\"},",
+									"        \"size\": {\"type\": \"integer\"},",
+									"        \"number\": {\"type\": \"integer\"},",
+									"        \"sort\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [",
+									"                \"sorted\",",
+									"                \"unsorted\",",
+									"                \"empty\"",
+									"            ],",
+									"            \"properties\": {",
+									"                \"sorted\": {\"type\": \"boolean\"},",
+									"                \"unsorted\": {\"type\": \"boolean\"},",
+									"                \"empty\": {\"type\": \"boolean\"}",
+									"            },",
+									"            \"additionalProperties\": false",
+									"        },",
+									"        \"numberOfElements\": {\"type\": \"integer\"},",
+									"        \"first\": {\"type\": \"boolean\"},",
+									"        \"empty\": {\"type\": \"boolean\"}",
+									"    },",
+									"    \"additionalProperties\": false",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData.content).length;",
+									"\tpm.expect(num).to.eql(parseInt(pm.collectionVariables.get(\"limit\")));",
+									"});",
+									"",
+									"pm.test(\"Page returned\", function() {",
+									"\tpage = pm.collectionVariables.get(\"page\") - 1;",
+									"\tpm.expect(jsonData.number).to.eql(page);",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/products?limit={{limit}}&page={{page}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "{{limit}}"
+								},
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product list without inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [",
+									"        \"content\",",
+									"        \"pageable\",",
+									"        \"totalPages\",",
+									"        \"totalElements\",",
+									"        \"last\",",
+									"        \"size\",",
+									"        \"number\",",
+									"        \"sort\",",
+									"        \"numberOfElements\",",
+									"        \"first\",",
+									"        \"empty\"",
+									"    ],",
+									"    \"properties\": {",
+									"        \"content\": {",
+									"            \"type\": \"array\",",
+									"            \"additionalItems\": false,",
+									"            \"items\": {",
+									"                \"anyOf\": [",
+									"                    {",
+									"                        \"type\": \"object\",",
+									"                        \"required\": [",
+									"                            \"itemId\",",
+									"                            \"name\",",
+									"                            \"desc\",",
+									"                            \"price\"",
+									"                        ],",
+									"                        \"properties\": {",
+									"                            \"itemId\": {\"type\": \"string\"},",
+									"                            \"name\": {\"type\": \"string\"},",
+									"                            \"desc\": {\"type\": \"string\"},",
+									"                            \"price\": {\"type\": \"number\"}",
+									"                        },",
+									"                        \"additionalProperties\": false",
+									"                    }",
+									"                ]",
+									"            }",
+									"        },",
+									"        \"pageable\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [",
+									"                \"sort\",",
+									"                \"offset\",",
+									"                \"pageNumber\",",
+									"                \"pageSize\",",
+									"                \"paged\",",
+									"                \"unpaged\"",
+									"            ],",
+									"            \"properties\": {",
+									"                \"sort\": {",
+									"                    \"type\": \"object\",",
+									"                    \"required\": [",
+									"                        \"sorted\",",
+									"                        \"unsorted\",",
+									"                        \"empty\"",
+									"                    ],",
+									"                    \"properties\": {",
+									"                        \"sorted\": {\"type\": \"boolean\"},",
+									"                        \"unsorted\": {\"type\": \"boolean\"},",
+									"                        \"empty\": {\"type\": \"boolean\"}",
+									"                    },",
+									"                    \"additionalProperties\": false",
+									"                },",
+									"                \"offset\": {\"type\": \"integer\"},",
+									"                \"pageNumber\": {\"type\": \"integer\"},",
+									"                \"pageSize\": {\"type\": \"integer\"},",
+									"                \"paged\": {\"type\": \"boolean\"},",
+									"                \"unpaged\": {\"type\": \"boolean\"}",
+									"            },",
+									"            \"additionalProperties\": false",
+									"        },",
+									"        \"totalPages\": {\"type\": \"integer\"},",
+									"        \"totalElements\": {\"type\": \"integer\"},",
+									"        \"last\": {\"type\": \"boolean\"},",
+									"        \"size\": {\"type\": \"integer\"},",
+									"        \"number\": {\"type\": \"integer\"},",
+									"        \"sort\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [",
+									"                \"sorted\",",
+									"                \"unsorted\",",
+									"                \"empty\"",
+									"            ],",
+									"            \"properties\": {",
+									"                \"sorted\": {\"type\": \"boolean\"},",
+									"                \"unsorted\": {\"type\": \"boolean\"},",
+									"                \"empty\": {\"type\": \"boolean\"}",
+									"            },",
+									"            \"additionalProperties\": false",
+									"        },",
+									"        \"numberOfElements\": {\"type\": \"integer\"},",
+									"        \"first\": {\"type\": \"boolean\"},",
+									"        \"empty\": {\"type\": \"boolean\"}",
+									"    },",
+									"    \"additionalProperties\": false",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData.content).length;",
+									"\tpm.expect(num).to.eql(parseInt(pm.collectionVariables.get(\"limit\")));",
+									"});",
+									"",
+									"pm.test(\"Page returned\", function() {",
+									"\tpage = pm.collectionVariables.get(\"page\") - 1;",
+									"\tpm.expect(jsonData.number).to.eql(page);",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/products?inventory=false&limit=5&page=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"products"
+							],
+							"query": [
+								{
+									"key": "inventory",
+									"value": "false"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get list of products by IDs",
+			"item": [
+				{
+					"name": "Get list of products with inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"array\",",
+									"    \"additionalItems\": false,",
+									"    \"items\": {",
+									"        \"anyOf\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"required\": [",
+									"                    \"itemId\",",
+									"                    \"name\",",
+									"                    \"desc\",",
+									"                    \"price\",",
+									"                    \"quantity\"",
+									"                ],",
+									"                \"properties\": {",
+									"                    \"itemId\": {\"type\": \"string\"},",
+									"                    \"name\": {\"type\": \"string\"},",
+									"                    \"desc\": {\"type\": \"string\"},",
+									"                    \"price\": {\"type\": \"number\"},",
+									"                    \"quantity\": {\"type\": \"integer\"}",
+									"                },",
+									"                \"additionalProperties\": false",
+									"            }",
+									"        ]",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData).length;",
+									"\tpm.expect(num).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/list/:ids?inventory=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								"list",
+								":ids"
+							],
+							"query": [
+								{
+									"key": "inventory",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "ids",
+									"value": "{{productIds}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list of products with inventory w/o query parameter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"array\",",
+									"    \"additionalItems\": false,",
+									"    \"items\": {",
+									"        \"anyOf\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"required\": [",
+									"                    \"itemId\",",
+									"                    \"name\",",
+									"                    \"desc\",",
+									"                    \"price\",",
+									"                    \"quantity\"",
+									"                ],",
+									"                \"properties\": {",
+									"                    \"itemId\": {\"type\": \"string\"},",
+									"                    \"name\": {\"type\": \"string\"},",
+									"                    \"desc\": {\"type\": \"string\"},",
+									"                    \"price\": {\"type\": \"number\"},",
+									"                    \"quantity\": {\"type\": \"integer\"}",
+									"                },",
+									"                \"additionalProperties\": false",
+									"            }",
+									"        ]",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData).length;",
+									"\tpm.expect(num).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/list/:ids",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								"list",
+								":ids"
+							],
+							"variable": [
+								{
+									"key": "ids",
+									"value": "{{productIds}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list of products without inventory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"array\",",
+									"    \"additionalItems\": false,",
+									"    \"items\": {",
+									"        \"anyOf\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"required\": [",
+									"                    \"itemId\",",
+									"                    \"name\",",
+									"                    \"desc\",",
+									"                    \"price\"",
+									"                ],",
+									"                \"properties\": {",
+									"                    \"itemId\": {\"type\": \"string\"},",
+									"                    \"name\": {\"type\": \"string\"},",
+									"                    \"desc\": {\"type\": \"string\"},",
+									"                    \"price\": {\"type\": \"number\"}",
+									"                },",
+									"                \"additionalProperties\": false",
+									"            }",
+									"        ]",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData).length;",
+									"\tpm.expect(num).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/list/:ids?inventory=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								"list",
+								":ids"
+							],
+							"query": [
+								{
+									"key": "inventory",
+									"value": "false"
+								}
+							],
+							"variable": [
+								{
+									"key": "ids",
+									"value": "{{productIds}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get empty list of products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData).length;",
+									"\tpm.expect(num).to.eql(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/catalog/product/list/:ids?inventory=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"catalog",
+								"product",
+								"list",
+								":ids"
+							],
+							"query": [
+								{
+									"key": "inventory",
+									"value": "false"
+								}
+							],
+							"variable": [
+								{
+									"key": "ids",
+									"value": "{{productIds2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activity",
+			"item": [
+				{
+					"name": "Post activity event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idSite\": \"globex-retail\",\n  \"activity\": {\n    \"userId\": \"7672a49e-9afc-498f-91bc-98f881179f2c\",\n    \"url\": \"https://globex-retail.com/product/12345/details\",\n    \"rand\": \"ba6eb330-4f7f-11eb-a2fb-67c34e9ac07c\",\n    \"type\": \"like\"\n  },\n  \"userInfo\": {\n    \"visitsCount\": 1,\n    \"prevVisitTs\": 1647249258,\n    \"firstVisitTs\": 1647249258,\n    \"campaign\": \"abc123\",\n    \"localTime\": \"2022-03-14T09:26:04+00:00\",\n    \"newVisit\": 1\n  },\n  \"actionInfo\": {\n    \"productId\": \"a12345\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/activity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"activity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post activity event bad request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idSite\": \"globex-retail\",\n  \"activity\": {\n    \"url\": \"https://globex-retail.com/product/12345/details\",\n    \"rand\": \"ba6eb330-4f7f-11eb-a2fb-67c34e9ac07c\",\n    \"type\": \"like\"\n  },\n  \"userInfo\": {\n    \"visitsCount\": 1,\n    \"prevVisitTs\": 1647249258,\n    \"firstVisitTs\": 1647249258,\n    \"campaign\": \"abc123\",\n    \"localTime\": \"2022-03-14T09:26:04+00:00\",\n    \"newVisit\": 1\n  },\n  \"actionInfo\": {\n    \"productId\": \"a12345\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/activity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"activity"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recommendation",
+			"item": [
+				{
+					"name": "Get product scores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"var schema = {",
+									"    \"type\": \"array\",",
+									"    \"additionalItems\": false,",
+									"    \"items\": {",
+									"        \"anyOf\": [",
+									"            {",
+									"                \"type\": \"object\",",
+									"                \"required\": [",
+									"                    \"productId\",",
+									"                    \"score\",",
+									"                    \"product\"",
+									"                ],",
+									"                \"properties\": {",
+									"                    \"productId\": {\"type\": \"string\"},",
+									"                    \"score\": {\"type\": \"integer\"},",
+									"                    \"product\": {",
+									"                        \"type\": \"object\",",
+									"                        \"required\": [",
+									"                            \"itemId\",",
+									"                            \"name\",",
+									"                            \"desc\",",
+									"                            \"price\"",
+									"                        ],",
+									"                        \"properties\": {",
+									"                            \"itemId\": {\"type\": \"string\"},",
+									"                            \"name\": {\"type\": \"string\"},",
+									"                            \"desc\": {\"type\": \"string\"},",
+									"                            \"price\": {\"type\": \"number\"}",
+									"                        },",
+									"                        \"additionalProperties\": false",
+									"                    }",
+									"                },",
+									"                \"additionalProperties\": false",
+									"            }",
+									"        ]",
+									"    }",
+									"}",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.response.to.be.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Number of records returned\", function() {",
+									"\tnum = Object.keys(jsonData).length;",
+									"\tpm.expect(num).to.eql(10);",
+									"});",
+									"",
+									"pm.test(\"Schema is valid\", function() {",
+									"\tpm.expect(tv4.validate(jsonData, schema)).to.be.true;\t\t\t\t\t\t\t",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/recommendation/product",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recommendation",
+								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "itemId",
+			"value": "329199",
+			"type": "default"
+		},
+		{
+			"key": "itemId2",
+			"value": "999999",
+			"type": "default"
+		},
+		{
+			"key": "limit",
+			"value": "5",
+			"type": "default"
+		},
+		{
+			"key": "page",
+			"value": "1",
+			"type": "default"
+		},
+		{
+			"key": "productIds",
+			"value": "329199,329299",
+			"type": "default"
+		},
+		{
+			"key": "productIds2",
+			"value": "999999,999998",
+			"type": "default"
+		}
+	]
+}
